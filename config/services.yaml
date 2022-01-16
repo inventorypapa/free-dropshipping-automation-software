@@ -1,0 +1,143 @@
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    locale: en_US
+services:
+    app.listener.admin.product.form.menu_builder:
+            class: App\Menu\AdminProductFormMenuListener
+            tags:
+                - { name: kernel.event_listener, event: sylius.menu.admin.product.form, method: addItems }
+    app.listener.admin.product_variant.form.menu_builder:
+        class: App\Menu\AdminProductVariantFormMenuListener
+        tags:
+            - { name: kernel.event_listener, event: sylius.menu.admin.product_variant.form, method: addItems }
+    app.listener.admin.menu_builder:
+        class: App\Menu\AdminMenuListener
+        tags:
+            - { name: kernel.event_listener, event: sylius.menu.admin.main, method: addAdminMenuItems }
+    App\Controller\ProductController:
+        autowire: false
+        
+    app.repository.inventory:
+        class: App\Repository\InventoryRepository
+        factory:
+            - "@doctrine.orm.entity_manager"
+            - getRepository
+        arguments: [App\Entity\Inventory]
+    app.repository.track2:
+        class: App\Repository\TrackRepository
+        factory:
+            - "@doctrine.orm.entity_manager"
+            - getRepository
+        arguments: [App\Entity\Track]
+    app.repository.product_inventory:
+        class: App\Repository\ProductInventoryRepository
+        factory:
+            - "@doctrine.orm.entity_manager"
+            - getRepository
+        arguments: [App\Entity\ProductInventory]
+    app.form.type.inventory:
+        class: App\Form\Type\Inventory
+        tags:
+            - { name: form.type }
+        arguments:
+            - \App\Entity\Inventory
+            - [sylius]
+            - '@app.repository.inventory'
+            - '@app.repository.product_inventory'
+    app.form.type.inventoryForCRUD:
+        class: App\Form\Type\InventoryForCRUD
+        tags:
+            - { name: form.type }
+        arguments:
+            - \App\Entity\Inventory
+            - [sylius]
+            - '@app.repository.inventory'
+            - '@app.repository.product_inventory'
+    app.form.type.product_inventory:
+        class: App\Form\Type\ProductInventory
+        tags:
+            - { name: form.type }
+        arguments:
+            - \App\Entity\ProductInventory
+            - [sylius]
+    app.form.type.product_inventory_collection:
+        class: App\Form\Type\ProductInventoryCollectionType
+        tags:
+            - { name: form.type }
+        arguments:
+            - '@app.repository.product_inventory'
+    app.form.type.inventory_collection.datatransformer:
+        class: App\Form\DataTransformer\ProductInventoriesToInventoriesTransformer
+        arguments:
+            ['@app.repository.inventory']
+    app.form.type.inventory_collection:
+        class: App\Form\Type\InventoryCollectionType
+        tags:
+            - { name: form.type }
+        arguments:
+            - '@app.repository.inventory'
+            - '@app.form.type.inventory_collection.datatransformer'
+    app.form.type.order_routed:
+        class: App\Form\Type\OrderRouted
+        tags:
+            - { name: form.type }
+        arguments:
+            - \App\Entity\OrderRouted
+            - [sylius]
+    app.form.type.pricemarkup:
+        class: App\Form\Type\PriceMarkupType 
+        tags:
+            - { name: form.type }
+        arguments:
+            - '@sylius.repository.channel'
+    app.form.type.pricemarkupcollection:
+        class: App\Form\Type\PriceMarkupCollectionType 
+        tags:
+            - { name: form.type }
+        arguments:
+            - '@sylius.repository.channel'
+    app.form.type.track:
+        class: App\Form\Type\OrderTrackType 
+        tags:
+            - { name: form.type }
+        arguments:
+            - '@app.repository.track2'
+    app.form.extension.type.product:
+        class: App\Form\Extension\ProductTypeExtension
+        tags:
+            - { name: form.type_extension, extended_type: Sylius\Bundle\ProductBundle\Form\Type\ProductType, priority: -5 }
+        arguments:
+            - '@app.repository.inventory'
+    app.form.extension.type.product_variant:
+        class: App\Form\Extension\ProductVariantTypeExtension
+        tags:
+            - { name: form.type_extension, extended_type: Sylius\Bundle\ProductBundle\Form\Type\ProductVariantType, priority: -5 }
+        arguments:
+            - '@app.repository.inventory'
+
+  #  app.controller.pricemarkup:
+   #     class: App\Controller\PriceMarkupController
+    #    tags: [controller.service_arguments]
+     #   arguments: ['@sylius.resource_registry']
+      #  calls:
+       #     - [setContainer, ['@service_container']]
+sylius_product:
+    resources:
+        product_variant:
+            classes:
+                model: App\Entity\ProductVariant
+                repository: App\Repository\ProductVariantRepository
+        product:
+            classes:
+                model: App\Entity\Product
+sylius_order:
+    resources:
+        order_item:
+            classes:
+                model: App\Entity\OrderItem
+                repository: App\Repository\OrderItemRepository
+        order:
+            classes:
+                model: App\Entity\Order
+                controller: App\Controller\OrderController

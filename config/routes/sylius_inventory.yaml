@@ -1,0 +1,206 @@
+sylius_admin_inventory_index:
+    path: /admin/inventory
+    methods: [GET]
+    defaults:
+        _controller: sylius.controller.inventory:indexAction
+        _sylius:
+            template: "@SyliusAdmin/Crud/index.html.twig"
+            grid: sylius_admin_inventory
+            section: admin
+            permission: true
+            vars:
+                icon: history
+                templates:
+                    breadcrumb: "@SyliusAdmin/Inventory/Index/_breadcrumb.html.twig"
+                header: sylius.ui.inventory
+                subheader: sylius.ui.manage_inventory
+sylius_admin_inventory_update:
+    path: /admin/inventory/{id}/edit
+    methods: [GET,PUT]
+    defaults:
+        _controller: sylius.controller.inventory:updateAction
+        _sylius:
+            template: "@SyliusAdmin/Crud/update.html.twig"
+            section: admin
+            permission: true
+            form:
+                type: App\Form\Type\InventoryForCRUD
+sylius_admin_inventory_delete:
+    path: /admin/inventory/{id}/delete
+    methods: [DELETE]
+    defaults:
+        _controller: sylius.controller.inventory:deleteAction
+        _sylius:
+            section: admin
+            permission: true
+            form:
+                type: App\Form\Type\InventoryForCRUD    
+                
+sylius_admin_inventory_create:
+    path: /admin/inventory/create
+    methods: [GET,POST]
+    defaults:
+        _controller: sylius.controller.inventory:createAction
+        _sylius:
+            template: "@SyliusAdmin/Crud/create.html.twig"
+            section: admin
+            permission: true
+            form:
+                type: App\Form\Type\InventoryForCRUD  
+sylius_admin_inventory_route:
+    path: /admin/inventory/route/{id}
+    methods: [POST]
+    defaults:
+        _controller: sylius.controller.order:routeAction
+        _sylius:
+            section: admin
+            permission: true
+sylius_admin_inventory_updatecost:
+    path: /admin/inventory/updatecost/{id}
+    methods: [POST]
+    defaults:
+        _controller: sylius.controller.order:updatecostAction
+        _sylius:
+            section: admin
+            permission: true
+sylius_admin_pricemarkup_index:
+    path: /admin/price-markup/index
+    methods: [GET]
+    defaults:
+        _controller: app.controller.pricemarkup:indexAction
+sylius_admin_pricemarkup_update:
+    path: /admin/price-markup/update
+    methods: [POST]
+    defaults:
+        _controller: app.controller.pricemarkup:updateAction
+sylius_admin_rma_index:
+    path: /admin/rma/
+    methods: [GET]
+    defaults:
+        _controller: app.controller.rma:indexAction
+        _sylius:
+            template: "@SyliusAdmin/Crud/index.html.twig"
+            grid: sylius_admin_rma
+            section: admin
+            permission: true
+            vars:
+                icon: history
+                templates:
+                    breadcrumb: "@SyliusAdmin/Inventory/Index/_breadcrumb.html.twig"
+                header: sylius.ui.rma
+                subheader: sylius.ui.rma
+app_admin_rma_index:
+    path: /admin/rma/
+    methods: [GET]
+    defaults:
+        _controller: app.controller.rma:indexAction
+        _sylius:
+            template: "@SyliusAdmin/Crud/index.html.twig"
+            grid: sylius_admin_rma
+            section: admin
+            permission: true
+            vars:
+                icon: history
+                templates:
+                    breadcrumb: "@SyliusAdmin/Inventory/Index/_breadcrumb.html.twig"
+                header: sylius.ui.rma
+                subheader: sylius.ui.rma
+sylius_admin_rma_update:
+    path: /admin/rma/update
+    methods: [GET,POST]
+    defaults:
+        _controller: app.controller.rma:updateAction
+app_admin_rma_create:
+    path: /admin/rma/create
+    methods: [GET,POST]
+    defaults:
+        _controller: app.controller.rma:createAction
+        _sylius:
+            template: "@SyliusAdmin/Crud/create.html.twig"
+            section: admin
+            permission: true
+            form:
+                type: App\Form\Type\RmaType  
+app_admin_track_index:
+    path: /admin/track/
+    methods: [GET]
+    defaults:
+        _controller: app.controller.track:indexAction
+        _sylius:
+            template: "@SyliusAdmin/Crud/index.html.twig"
+            grid: sylius_admin_track
+            section: admin
+            permission: true
+            vars:
+                icon: history
+                templates:
+                    breadcrumb: "@SyliusAdmin/Inventory/Index/_breadcrumb.html.twig"
+                header: sylius.ui.track
+                subheader: sylius.ui.track
+sylius_admin_track_index:
+    path: /admin/track/
+    methods: [GET]
+    defaults:
+        _controller: app.controller.track:indexAction
+        _sylius:
+            template: "@SyliusAdmin/Crud/index.html.twig"
+            grid: sylius_admin_track
+            section: admin
+            permission: true
+            vars:
+                icon: history
+                templates:
+                    breadcrumb: "@SyliusAdmin/Inventory/Index/_breadcrumb.html.twig"
+                header: sylius.ui.track
+                subheader: sylius.ui.track
+sylius_admin_track_update:
+    path: /admin/track/update
+    methods: [GET,PUT]
+    defaults:
+        _controller: app.controller.track:updateAction
+        _sylius:
+            template: "@SyliusAdmin/Crud/update.html.twig"
+            section: admin
+            permission: true
+            form:
+                type: App\Form\Type\TrackType
+app_admin_track_update:
+    path: /admin/track/update
+    methods: [GET,POST]
+    defaults:
+        _controller: app.controller.track:updateAction
+        _sylius:
+            template: "@SyliusAdmin/Crud/update.html.twig"
+            section: admin
+            permission: true
+            form:
+                type: App\Form\Type\TrackType
+app_admin_track_create:
+    path: /admin/track/create
+    methods: [GET,POST]
+    defaults:
+        _controller: app.controller.track:createAction
+        _sylius:
+            template: "@SyliusAdmin/Crud/create.html.twig"
+            section: admin
+            permission: true
+            form:
+                type: App\Form\Type\TrackType  
+app_admin_track_delete:
+    path: /admin/track/{id}/delete
+    methods: [DELETE]
+    defaults:
+        _controller: app.controller.track:deleteAction
+        _sylius:
+            section: admin
+            permission: true
+            form:
+                type: App\Form\Type\TrackType
+sylius_admin_ordertrack_update:
+    path: /admin/ordertrack/update/{id}
+    methods: [POST]
+    defaults:
+        _controller: sylius.controller.order:updatetrackAction
+        _sylius:
+            section: admin
+            permission: true

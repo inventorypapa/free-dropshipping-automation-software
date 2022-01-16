@@ -1,0 +1,171 @@
+#the below  sylius_ui block cant be      placed       ininventory.yaml ,it won't work
+sylius_ui:
+    events:
+        sylius.admin.pricemarkup:
+            blocks:
+                before_header_legacy:
+                    template: "@SyliusAdmin/Crud/Block/_legacySonataEvent.html.twig"
+                    priority: 25
+                    context:
+                        postfix: index.before_header
+                header:
+                    template: "@SyliusAdmin/Crud/Index/_header.html.twig"
+                    priority: 20
+                after_header_legacy:
+                    template: "@SyliusAdmin/Crud/Block/_legacySonataEvent.html.twig"
+                    priority: 15
+                    context:
+                        postfix: index.after_header
+                content:
+                    template: "@SyliusAdmin/PriceMarkup/Index/_content.html.twig"
+                    priority: 10
+                after_content:
+                    template: "@SyliusAdmin/Crud/Block/_legacySonataEvent.html.twig"
+                    priority: 5
+                    context:
+                        postfix: index.after_content
+         
+sylius_grid:
+    grids:
+        sylius_admin_inventory:
+            driver:
+                name: doctrine/orm
+                options:
+                    class: "App\\Entity\\Inventory"
+                    repository:
+                        method: createInventoryListQueryBuilder
+                        arguments: ["%locale%"]
+            fields:
+                name:
+                    type: twig
+                    path: .
+                    label: sylius.ui.name
+                    options:
+                        template: "@SyliusAdmin/Inventory/Grid/Field/name.html.twig"
+                
+        #        inventory:
+         #           type: twig
+          ###          path: .
+             #       label: sylius.ui.inventory
+              #      options:
+               #         template: "@SyliusAdmin/ProductVariant/Grid/Field/inventory.html.twig"
+            filters:
+             #   code:
+              #      type: string
+               #     label: sylius.ui.code
+                name:
+                    type: string
+                    label: sylius.ui.name
+                    options:
+                        fields: [translation.name]
+            actions:
+                main:
+                    create:
+                        type: create 
+                item:
+                    update:
+                        type: update
+                        options:
+                            link:
+                                route: sylius_admin_inventory_update
+                                parameters:
+                                    id: resource.id
+                    delete:
+                        type: delete
+        sylius_admin_rma:
+            driver:
+                name: doctrine/orm
+                options:
+                    class: "App\\Entity\\Rma"
+                    repository:
+                        method: createInventoryListQueryBuilder
+                        arguments: ["%locale%"]
+            fields:
+                name:
+                    type: twig
+                    path: .
+                    label: sylius.ui.name
+                    options:
+                        template: "@SyliusAdmin/Inventory/Grid/Field/name.html.twig"
+     #           code:
+      #              type: string
+       #             label: sylius.ui.code
+        #        inventory:
+         #           type: twig
+          ###          path: .
+             #       label: sylius.ui.inventory
+              #      options:
+               #         template: "@SyliusAdmin/ProductVariant/Grid/Field/inventory.html.twig"
+            filters:
+             #   code:
+              #      type: string
+               #     label: sylius.ui.code
+                name:
+                    type: string
+                    label: sylius.ui.customer_name
+                    options:
+                        fields: [translation.name]
+            actions:
+                main:
+                    create:
+                        type: create 
+                item:
+                    update:
+                        type: update
+                        options:
+                            link:
+                                route: sylius_admin_rma_update
+                                parameters:
+                                    id: resource.id
+                    delete:
+                        type: delete
+        sylius_admin_track:
+            driver:
+                name: doctrine/orm
+                options:
+                    class: "App\\Entity\\Track"
+                    repository:
+                        method: createInventoryListQueryBuilder
+                        arguments: ["%locale%"]
+            fields:
+                name:
+                    type: twig
+                    path: .
+                    label: sylius.ui.name
+                    options:
+                        template: "@SyliusAdmin/Track/Grid/Field/name.html.twig"
+                url:
+                    type: string
+                    label: sylius.ui.url
+     #           code:
+      #              type: string
+       #             label: sylius.ui.code
+        #        inventory:
+         #           type: twig
+          ###          path: .
+             #       label: sylius.ui.inventory
+              #      options:
+               #         template: "@SyliusAdmin/ProductVariant/Grid/Field/inventory.html.twig"
+            filters:
+             #   code:
+              #      type: string
+               #     label: sylius.ui.code
+                name:
+                    type: string
+                    label: sylius.ui.name
+                    options:
+                        fields: [translation.name]
+            actions:
+                main:
+                    create:
+                        type: create
+                item:
+                    update:
+                        type: update
+                        options:
+                            link:
+                                route: sylius_admin_track_update
+                                parameters:
+                                    id: resource.id
+                    delete:
+                        type: delete

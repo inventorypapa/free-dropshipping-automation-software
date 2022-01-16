@@ -1,0 +1,3 @@
+sylius_taxon:
+    resource: "@SyliusTaxonomyBundle/Resources/config/routing/taxon.yml"
+    prefix: /taxon

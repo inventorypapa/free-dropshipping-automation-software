@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>{% block title %}Sylius{% endblock %}</title>
+
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    {% block metatags %}
+    {% endblock %}
+
+    {% block stylesheets %}
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    {% endblock %}
+</head>
+
+<body class="pushable">
+<!--
+<div class="ui sidebar vertical inverted menu visible left" id="sidebar">-->
+
+<div class="ui borderless fixed menu">
+<div class="ui left floated dividing empty item"></div>
+
+    <div class="ui text menu" style='background:white;padding-left:2em;'>
+        {% block sidebar %}
+        {% endblock %}
+    </div>
+<div class="ui right floated dividing empty item"></div>
+<!-- _security.html.twig-->
+   <div class="ui floated simple dropdown item">
+    {% include '@SyliusAdmin/AdminUser/_avatarImage.html.twig' %}
+    <span>{{ app.user.firstName|default(app.user.email) }}</span>
+    <i class="dropdown icon"></i>
+    <div class="menu">
+        <a href="{{ path('sylius_admin_admin_user_update', {'id': app.user.id}) }}" class="item">
+            <i class="user icon"></i>
+            {{ 'sylius.ui.my_account'|trans }}
+        </a>
+        <a href="{{ path('sylius_admin_logout') }}" id="sylius-logout-button" class="item">
+            <i class="sign out icon"></i>
+            {{ 'sylius.ui.logout'|trans }}
+        </a>
+    </div>
+</div>
+<!-- end -->
+
+
+</div>
+<div class="pusher">
+    <div class="full height" id="wrapper">
+        <div id="content">
+            {% block flash_messages %}
+                {% include '@SyliusUi/_flashes.html.twig' %}
+            {% endblock %}
+
+            {% block pre_content %}
+            {% endblock %}
+
+            {% block content %}
+            {% endblock %}
+
+            {% block post_content %}
+            {% endblock %}
+        </div>
+
+        <div class="sylius-footer">
+            {% block footer %}
+            {% endblock %}
+        </div>
+    </div>
+</div>
+
+{% include '@SyliusUi/Modal/_confirmation.html.twig' %}
+
+{% block javascripts %}
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,64 @@
+.. rst-class:: outdated
+
+Interfaces
+==========
+
+.. danger::
+
+   We're sorry but **this documentation section is outdated**. Please have that in mind when trying to use it.
+   You can help us making documentation up to date via Sylius Github. Thank you!
+
+Model Interfaces
+----------------
+
+.. _component_product_model_product-interface:
+
+ProductInterface
+~~~~~~~~~~~~~~~~
+
+This interface should be implemented by models characterizing a product.
+
+.. note::
+   This interface extends `SlugAwareInterface <https://github.com/Sylius/SyliusResourceBundle/blob/master/src/Component/Model/SlugAwareInterface.php>`_,
+   `TimestampableInterface <https://github.com/Sylius/SyliusResourceBundle/blob/master/src/Component/Model/TimestampableInterface.php>`_
+   and :ref:`component_product_model_product-translation-interface`.
+
+   For more information go to `Sylius API ProductInterface`_.
+
+.. _Sylius API ProductInterface: http://api.sylius.com/Sylius/Component/Product/Model/ProductInterface.html
+
+.. _component_product_model_product-translation-interface:
+
+ProductTranslationInterface
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This interface should be implemented by models used for storing a single translation of product fields.
+
+.. note::
+   This interface extends the `SlugAwareInterface <https://github.com/Sylius/SyliusResourceBundle/blob/master/src/Component/Model/SlugAwareInterface.php>`_.
+
+   For more information go to `Sylius API ProductTranslationInterface`_.
+
+.. _Sylius API ProductTranslationInterface: http://api.sylius.com/Sylius/Component/Product/Model/ProductTranslationInterface.html
+
+.. _component_product_model_attribute-value-interface:
+
+AttributeValueInterface
+~~~~~~~~~~~~~~~~~~~~~~~
+
+This interfaces should be implemented by models used
+to bind an attribute and a value to a specific product.
+
+.. note::
+   This interface extends the :ref:`component_attribute_model_attribute-value-interface`.
+
+   For more information go to `Sylius API AttributeValueInterface`_.
+
+.. _Sylius API AttributeValueInterface: http://api.sylius.com/Sylius/Component/Product/Model/AttributeValueInterface.html
+
+.. _component_product_model_variant-interface:
+
+ProductVariantInterface
+~~~~~~~~~~~~~~~~~~~~~~~
+
+This interface should be implemented by models binding a product with a specific combination of attributes.

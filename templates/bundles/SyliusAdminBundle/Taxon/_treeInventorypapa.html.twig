@@ -1,0 +1,47 @@
+{% import _self as tree %}
+
+{% macro render(taxons) %}
+    {% import _self as tree %}
+
+    {% for taxonOuter in taxons %}   
+    {% for taxon in taxonOuter.children %}
+    <div class="ui simple dropdown" style='padding:.92857143em 1.14285714em;'>
+            <a href="{{ path('sylius_admin_product_per_taxon_index', {'taxonId': taxon.id}) }}"{% if not taxon.enabled %} class="text gray"{% endif %}>
+                {{ taxon.name }}
+            </a>
+            <i class="{{ taxon.children is not empty ? 'caret down' : '' }} icon"></i>
+            <div class="menu">
+            {% for child in taxon.children %}   
+               <a class='item' href="{{ path('sylius_admin_product_per_taxon_index', {'taxonId': child.id}) }}"{% if not child.enabled %} class="text gray"{% endif %}>
+                {{ child.name }}
+                </a>
+            {% endfor %}
+            </div>
+    </div>
+    {% endfor %}
+    {% endfor %}
+{% endmacro %}
+
+<div class="ui two column stackable grid" style='padding-top:30px'>
+    <div class="sixteen wide mobile sixteen wide tablet three wide computer">
+    <div class="ui vertical fluid labeled icon buttons">
+        <a href="{{ path('sylius_admin_product_index') }}" class="ui primary button">
+            <i class="search icon"></i>
+            {{ 'sylius.ui.browse_all_products'|trans }}
+        </a>
+
+        <a href="{{ path('sylius_admin_taxon_create') }}" class="ui button">
+            <i class="sitemap icon"></i>
+            {{ 'sylius.ui.manage_taxons'|trans }}
+        </a>
+    </div>
+    </div>
+    <div class="sixteen wide mobile sixteen wide tablet three wide computer">
+        <div class="ui segment sylius-tree hidden" data-sylius-js-tree style='padding:0;'>
+            <a href="#" class="sylius-tree__toggle-all" style='padding-left:10px'>
+                Categories:
+            </a>
+            {{ tree.render(taxons) }}
+        </div>
+    </div>
+</div>

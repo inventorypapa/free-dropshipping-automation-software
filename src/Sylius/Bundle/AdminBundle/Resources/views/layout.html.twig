@@ -1,0 +1,32 @@
+{% extends '@SyliusUi/Layout/sidebar.html.twig' %}
+
+{% block title %} | Sylius{% endblock %}
+
+{% block stylesheets %}
+    {{ sylius_template_event('sylius.admin.layout.stylesheets') }}
+{% endblock %}
+
+{% block flash_messages %}
+    {% include '@SyliusAdmin/_flashes.html.twig' %}
+{% endblock %}
+
+{% block topbar %}
+    {{ sylius_template_event('sylius.admin.layout.topbar_left') }}
+
+    <div class="ui left floated dividing empty item"></div>
+
+    {{ sylius_template_event('sylius.admin.layout.topbar_middle') }}
+
+    <div class="ui right floated dividing empty item"></div>
+
+    {{ sylius_template_event('sylius.admin.layout.topbar_right') }}
+{% endblock %}
+
+{% block sidebar %}
+    {{ sylius_template_event('sylius.admin.layout.sidebar') }}
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ sylius_template_event('sylius.admin.layout.javascripts') }}
+{% endblock %}

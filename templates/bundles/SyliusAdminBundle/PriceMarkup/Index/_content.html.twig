@@ -1,0 +1,22 @@
+<div class='ui segment form'>
+<form name='{{ pricemarkup_form.vars.name }}' method="post" action='{{ path('sylius_admin_pricemarkup_update') }}'>
+{% for f in pricemarkup_form.children %}
+
+    {% for k, ff in f %}
+        <div class='field'>
+        {% if k == 'formula' %}
+        <label>{{ f.vars.name }}</label>
+            {% if f.vars.name in allData|keys %}
+                {{ form_widget(f['formula'], {'value' : allData[f.vars.name].formula})}}
+            {% else %}
+                {{ form_widget(f['formula'])}}            
+            {% endif %}
+        {% else %}
+            {{ form_widget(f['channelId'])}}
+        {% endif %}
+        </div>
+    {% endfor %}
+{% endfor %}
+{{ form_row(pricemarkup_form.save, {'attr': {'class': 'ui green label button large'}}) }}
+</form>
+</div>

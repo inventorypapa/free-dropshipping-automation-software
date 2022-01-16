@@ -1,0 +1,45 @@
+parameters:
+    # Adds a fallback DATABASE_URL if the env var is not set.
+    # This allows you to run cache:warmup even if your
+    # environment variables are not available yet.
+    # You should not need to change this value.
+    env(DATABASE_URL): ''
+
+doctrine:
+    dbal:
+  #      driver: 'pdo_mysql'
+   #     server_version: '5.7'
+    #    charset: utf8mb4
+
+     #   url: '%env(resolve:DATABASE_URL)%'
+        connections:
+            default:
+                dbname:   "sylius_dev"
+                driver:   "pdo_mysql"
+                host:     "127.0.0.1"
+                port:     "3306"
+                user:     "sylius"
+                password: "3722390aA!"
+                charset:  UTF8
+                mapping_types:
+                    bit: boolean
+
+    orm:
+        #mappings:
+        #      App:
+        #          is_bundle: false
+        #          type: yml
+        #          dir: '%kernel.project_dir%/src/App/Entity'
+        #          prefix: 'App\Entity'
+        #          alias: App
+        entity_managers:
+            default:
+                connection: default
+                naming_strategy: doctrine.orm.naming_strategy.underscore
+                mappings:
+                    App:
+                        is_bundle: false
+                        type: annotation
+                        dir: '%kernel.project_dir%/src/App/Entity'
+                        prefix: 'App\Entity'
+                        alias: App

@@ -1,0 +1,61 @@
+app:
+    form:
+        inventory:
+            name: Name
+            cost: Cost
+            shipping: Shipping
+            onHand: On Hand
+    ui:
+        pricemarkups: "Price Markup Formulas"
+        
+        new_rma: "New Return"
+        new_track: "New Track"
+        edit_track: "Edit Track"
+sylius:
+    ui:
+        edit_inventory: "Edit Inventory"
+        inventories: Inventories
+        new_inventory: "Add Inventory"
+        inventory_name: "Inventory Name"
+        onHand: "On Hand"
+        cost: "Cost"
+        shipping: "Shipping"
+        totalcost: "Total"
+        route_to_inventories : "Route To Inventories" 
+        order_item_reconciles: "Reconciles"
+        routed_to_inventory: "Routed To Inventory"
+        routed_at_date: "Routed AT"
+        route_actions: "Actions"
+        best_inventory: "Best Fit Inventory"
+        none: "None"
+        route_now: "Route Now"
+        order_routed_ok: "Routed Successfully"
+
+        real_cost: "Real Cost"
+        real_shipping: "Real Shipping"
+        update: "Update"
+        reconcile_actions: "Action"
+        updated: "Updated"
+        pricemarkups: "Price Markup Formulas"
+
+        save: "Save"
+        saved: "Saved"
+        rma:  "Returns Management"
+        customer_name: "Customer Name"
+
+        track: "Tracking"
+        url: "URL"
+
+        notempty: "This field cannot be empty"
+
+        order_item_track: "Tracking"
+        tracknum: "Tracking #"
+        carrier: "Shipping Carrier"
+        tracklink: "Link"
+
+        sku: "Sku"
+
+        
+
+
+

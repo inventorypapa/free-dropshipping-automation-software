@@ -1,0 +1,28 @@
+sylius_inventory:
+    resources:
+        inventory:
+            classes:
+                controller: App\Controller\InventoryController
+                model: App\Entity\Inventory
+                repository: App\Repository\InventoryRepository
+sylius_resource:
+    resources:
+        app.pricemarkup:
+            driver: doctrine/orm # You can use also different driver here
+            classes:
+                controller: App\Controller\PriceMarkupController
+                model: App\Entity\PriceMarkup
+                repository: App\Repository\PriceMarkupRepository
+        app.rma:
+            driver: doctrine/orm # You can use also different driver here
+            classes:
+                controller: App\Controller\RmaController
+                model: App\Entity\Rma
+                repository: \App\Repository\RmaRepository
+        app.track:
+            driver: doctrine/orm # You can use also different driver here
+            classes:
+                controller: App\Controller\TrackController
+                model: App\Entity\Track
+                repository: \App\Repository\TrackRepository
+

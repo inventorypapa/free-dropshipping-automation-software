@@ -1,0 +1,83 @@
+<div class="ui active tab" data-tab="inventory">
+<h3 class="ui dividing header">{{ 'sylius.ui.inventories' | trans}}</h3>
+    <div class='six fields'>
+        <div class='field'><label>{{ 'sylius.ui.inventory_name' | trans}}</label></div>
+        <div class='field'><label>{{ 'sylius.ui.sku' | trans}}</label></div>
+        <div class='field'><label>{{ 'sylius.ui.onHand' | trans}}</label></div>
+        <div class='field'><label>{{ 'sylius.ui.cost' | trans}}</label></div>
+        <div class='field'><label>{{ 'sylius.ui.shipping' | trans}}</label></div>
+        <div class='field'><label>{{ 'sylius.ui.totalcost' | trans}}</label></div>
+    </div>
+    {% set all = form.inventories | filter((v)=> v.cost.vars.value > 0)     %}
+    {% set all2 = form.inventories | filter((v)=> v.cost.vars.value == null)     %}
+    
+        
+    
+    {% for inv in  all %}
+    <div class='six fields'>
+        <div class='field'>
+            {{ inv.vars.name }}
+        </div>
+        {{ form_row(inv.sku) }}
+        {{ form_row(inv.onHand) }}
+        {{ form_row(inv.cost) }}
+        {{ form_row(inv.shipping) }}
+        {{ form_row(inv.totalcost) }}
+    </div>
+    {% endfor %}
+    {% if all2 | length %}
+        <div class='six fields'>
+            <div class='field'>
+                <select onChange='changeInv(this)'>
+                    <option value='toreplace'>Select Inventory</option>
+                {% for inv in  all2 %}
+                    <option value='{{ inv.vars.name }}'> {{ inv.vars.name }} </option>
+                {% endfor %}
+                </select>
+            </div>
+            <div class="field">
+                <input type="text" id="sylius_product_variant_inventories_toreplace_sku" name="sylius2_product_variant[inventories][toreplace][sku]" class="dirty">
+            </div>
+            <div class="field">
+                <input type="text" id="sylius_product_variant_inventories_toreplace_onHand" name="sylius2_product_variant[inventories][toreplace][onHand]" class="dirty">
+            </div>
+            <div class="field">
+                <div class="ui labeled input">
+                    <div class="ui label">$</div>
+                    <input type="text" id="sylius_product_variant_inventories_toreplace_cost" name="sylius2_product_variant[inventories][toreplace][cost]">
+                </div>
+            </div>
+            <div class="field">
+                <div class="ui labeled input">
+                    <div class="ui label">$</div>
+                    <input type="text" id="sylius_product_variant_inventories_toreplace_shipping" name="sylius2_product_variant[inventories][toreplace][shipping]">
+                </div>
+            </div>
+            <div class="field">
+                <div class="ui labeled input">
+                    <div class="ui label">$</div>
+                    <input type="text" id="sylius_product_variant_inventories_toreplace_totalcost" name="sylius2_product_variant[inventories][toreplace][totalcost]">
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    {{ sylius_template_event(['sylius.admin.product_variant.' ~ action ~ '.tab_inventory', 'sylius.admin.product_variant.tab_inventory'], {'form': form}) }}
+</div>
+{% block  javascript  %}
+<script>
+function changeInv(d){
+    /*
+    change name to sylius2 for fixing error: This formcannt contain extra fields           
+    */
+    let tmp = d.parentNode.parentNode.getElementsByTagName('input');
+    for(let i = 0;  i < tmp.length; i++){
+        let v = tmp[i].name.replace(/variant\[inventories\]\[(.+?)\]/g, 'variant\[inventories\]['+ d.value + ']');
+        if(d.value != 'toreplace'){
+            d.parentNode.parentNode.getElementsByTagName('input')[i].name = v.replace('sylius2','sylius');
+        }else{
+            d.parentNode.parentNode.getElementsByTagName('input')[i].name = v.replace('sylius','sylius2');
+        }
+    }
+}
+</script>
+{%  endblock  %}

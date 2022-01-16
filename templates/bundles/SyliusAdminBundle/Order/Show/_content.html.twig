@@ -1,0 +1,180 @@
+
+<div class="ui stackable grid">
+    <div class="twelve wide column">
+        {{ sylius_template_event('sylius.admin.order.show.summary', _context) }}
+         <div class='ui segment'>
+            <h3 class="ui dividing header">{{ 'sylius.ui.route_to_inventories' | trans }}</h3>
+            <table class="ui celled compact small table order-summary-table">
+                <thead>
+                <tr>
+                    <th class="five wide sylius-table-column-item">{{ 'sylius.ui.order_item_product'|trans }}</th>
+                    <th class="one wide sylius-table-column-item">{{ 'sylius.ui.routed_to_inventory'|trans }}</th>
+                    <th class="five wide sylius-table-column-item">{{ 'sylius.ui.routed_at_date' |trans }}</th>
+                    <th class="five wide sylius-table-column-item">{{ 'sylius.ui.route_actions' |trans }}</th>
+                </tr>
+                {% for item in order.items %}
+                     {% set bestInvId  = '' %}
+                     {% set bestInvName  =   'sylius.ui.none'|trans %}
+                     
+                    {% for inv in item.variant.inventories | sort((a, b) => a.cost + a.shipping  <= b.cost + b.shipping ) | filter((a) => a.onHand > 0)%}
+                        {% set bestInvId  = inv.inventory.id %}
+                        {% set bestInvName  = inv.inventory.name %}
+                    {% endfor %}
+                    {% set variant = item.variant %}
+                    {% set product = variant.product %}
+                    <tr>
+                        <td class="single line">
+                            {% include '@SyliusAdmin/Product/_info.html.twig' %}
+                        </td>
+                        <td>
+                            {% if item.routed %}
+                                {{ item.routed.inventory.name }}
+                            {% else %}
+                                &nbsp;
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if item.routed %}
+                                {{ item.routed.createdAt | format_datetime }}
+                            {% else %}
+                                &nbsp;
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div><b>{{ 'sylius.ui.best_inventory' | trans }}:</b></div>
+                            <div>{{ bestInvName }}</div>
+                            {% if bestInvId and null == item.routed %}
+                                {{ form_start(forms[variant.code]) }}
+                                {{ form_widget(forms[variant.code].inventoryId ,{'value' : bestInvId}) }}
+                                {{ form_widget(forms[variant.code].orderItemId ,{'value' : item.id}) }}
+                                {{ form_widget(forms[variant.code].save, {'attr': {'class': 'ui green label button'}}) }}
+                                {{ form_end(forms[variant.code]) }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class='ui segment '>
+            <h3 class="ui dividing header">{{ 'sylius.ui.order_item_reconciles' | trans }}</h3>
+            <div class='ui form'>
+                <div class='eleven wide fields'>
+                    <div class='six wide field'><label>{{ 'sylius.ui.order_item_product' | trans}}</label></div>
+                    <div class='field three wide'><label>{{ 'sylius.ui.real_cost' | trans}}</label></div>
+                    <div class='field three wide'><label>{{ 'sylius.ui.real_shipping' | trans}}</label></div>
+                    <div class='field three wide'><label>{{ 'sylius.ui.reconcile_actions' | trans}}</label></div>
+                </div>
+            </div>
+
+                {% for item in order.items %}
+               
+                    {% set variant = item.variant %}
+                    {% set product = variant.product %}
+                    {% set code2 = 'reconcile_' ~ variant.code | replace({'&':''}) %}
+                    
+                   <form name='{{ code2 }}' method="post" action='{{ path('sylius_admin_inventory_updatecost',{'id' : order.id}) }}'>
+                    {{ form_widget(forms[code2].orderItemId, {'value' : item.id}) }}
+                    {{ form_row(forms[code2]._token) }}
+                    {% if item.reconcile %}
+                        <input type='hidden' name='{{ code2 }}[id]' value='{{ item.reconcile.id }}' />
+                    {% endif %}
+                    <div class='ui form'>
+                        <div class='eleven wide fields'>
+                            <div class='six wide field'>
+                                {% include '@SyliusAdmin/Product/_info.html.twig' %}
+                            </div>
+                            <div class='field three wide'>
+                                <div class='ui labeled input'>
+                                    <div class='ui label'>{{ forms[code2].real_cost.vars.money_pattern | replace({ '{{ widget }}':''}) | raw }}</div>
+                                    {% if item.reconcile %}
+                                        <input type='text' name='{{ code2 }}[real_cost]' value='{{ item.reconcile.realCost }}' />
+                                    {% else %}
+                                        <input type='text' name='{{ code2 }}[real_cost]' value=''/>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class='field three wide'>
+                                <div class='ui labeled input'>
+                                    <div class='ui label'>{{ forms[code2].real_cost.vars.money_pattern | replace({ '{{ widget }}':''}) | raw }}</div>
+                                    {% if item.reconcile %}
+                                        <input type='text' name='{{ code2 }}[real_shipping]' value='{{ item.reconcile.realShipping }}' />
+                                    {% else %}
+                                        <input type='text' name='{{ code2 }}[real_shipping]' value=''/>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class='field three wide'>
+                                {{ form_widget(forms[code2].save, {'attr': {'class': 'large ui green label button'}}) }}
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                    
+                {% endfor %}
+        </div>
+<div class='ui segment '>
+        <h3 class="ui dividing header">{{ 'sylius.ui.order_item_track' | trans }}</h3>
+        <div class='ui form'>
+            <div class='eleven wide fields'>
+                <div class='six wide field'><label>{{ 'sylius.ui.order_item_product' | trans}}</label></div>
+                <div class='field three wide'><label>{{ 'sylius.ui.carrier' | trans}}</label></div>
+                <div class='field three wide'><label>{{ 'sylius.ui.tracknum' | trans}}</label></div>
+                <div class='field three wide'><label>{{ 'sylius.ui.tracklink' | trans}}</label></div>
+                 <div class='field three wide'><label>{{ 'sylius.ui.reconcile_actions' | trans}}</label></div>
+            </div>
+            {% for item in order.items %}
+               
+                    {% set variant = item.variant %}
+                    {% set product = variant.product %}
+                    {% set code2 = 'track_' ~ variant.code | replace({'&':''}) %}
+                    
+                   <form name='{{ code2 }}' method="post" action='{{ path('sylius_admin_ordertrack_update',{'id' : order.id}) }}'>
+                    {{ form_widget(forms[code2].orderItemId, {'value' : item.id}) }}
+                    {{ form_row(forms[code2]._token) }}
+                    {% if item.track %}
+                        <input type='hidden' name='{{ code2 }}[id]' value='{{ item.track.id }}' />
+                    {% endif %}
+                    <div class='ui form'>
+                        <div class='eleven wide fields'>
+                            <div class='six wide field'>
+                                {% include '@SyliusAdmin/Product/_info.html.twig' %}
+                            </div>
+                            <div class='field three wide'>
+                                <div class='ui labeled input'>
+                                    {% if item.track %}
+                                        {{ form_widget(forms[code2].trackId) }}
+                                    {% else %}
+                                        {{ form_widget(forms[code2].trackId) }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class='field three wide'>
+                                <div class='ui labeled input'>
+                                    {% if item.track %}
+                                        <input type='text' name='{{ code2 }}[trackNum]' value='{{ item.track.trackNum }}' />
+                                    {% else %}
+                                        <input type='text' name='{{ code2 }}[trackNum]' value=''/>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class='field three wide'>
+                            {% if item.track %}
+                                <a href='{{ item.track.track.url ~ item.track.trackNum}}' target='_blank'>{{ item.track.trackNum }}</a>
+                            {% endif %}
+                             </div>
+                            <div class='field three wide'>
+                                {{ form_widget(forms[code2].save, {'attr': {'class': 'large ui green label button'}}) }}
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                {% endfor %}
+        </div>
+    </div>
+    </div>
+
+    
+    <div class="four wide column">
+        {{ sylius_template_event('sylius.admin.order.show.sidebar', _context) }}
+    </div>
+</div>
