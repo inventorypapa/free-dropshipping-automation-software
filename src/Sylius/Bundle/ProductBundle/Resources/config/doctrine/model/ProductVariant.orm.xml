@@ -64,11 +64,13 @@
                 </inverse-join-columns>
             </join-table>
         </many-to-many>-->
-    <one-to-many field='inventories' target-entity="App\Entity\ProductInventory" mapped-by='variant'>
+   
+   <!--<one-to-many field='inventories' target-entity="App\Entity\ProductInventory" mapped-by='variant'>
         <cascade>
                 <cascade-all/>
             </cascade>
     </one-to-many>
+    above is moved to src/App/Entity/ProductVariant.php-->
     </mapped-superclass>
 
 </doctrine-mapping>
