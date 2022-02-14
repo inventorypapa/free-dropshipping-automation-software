@@ -34,7 +34,7 @@ class OrderTrack
     private $tracknum;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\OrderItem", cascade={"detach"}, fetch="LAZY")
+     * @ORM\OneToOne(targetEntity="App\Entity\OrderItem", cascade={"detach"}, fetch="LAZY", inversedBy="track")
      * @ORM\JoinColumn(name="order_item_id", referencedColumnName="id")
      */
     private $orderItem;

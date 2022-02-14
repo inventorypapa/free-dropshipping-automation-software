@@ -33,7 +33,7 @@ class OrderItemReconcile
     private $real_shipping;
 
     /**
-     * @ORM\OnetoOne(targetEntity="\App\Entity\OrderItem",cascade={"detach"},fetch="LAZY")
+     * @ORM\OnetoOne(targetEntity="\App\Entity\OrderItem",cascade={"detach"},fetch="LAZY", inversedBy="reconcile")
      * @ORM\JoinColumn(name="order_item_id", referencedColumnName="id")
      */
     private $orderItem;

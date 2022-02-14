@@ -49,7 +49,6 @@ class OrderRouted
      */
     private $invoiceId;
 
-
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Inventory", cascade={"detach"}, fetch="LAZY")
      * @ORM\JoinColumn(name="inventory_id", referencedColumnName="id")
@@ -57,7 +56,7 @@ class OrderRouted
     private $inventory;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\OrderItem", cascade={"detach"}, fetch="LAZY")
+     * @ORM\OneToOne(targetEntity="App\Entity\OrderItem", cascade={"detach"}, fetch="LAZY", inversedBy="routed")
      * @ORM\JoinColumn(name="order_item_id", referencedColumnName="id")
      */
     private $orderItem;

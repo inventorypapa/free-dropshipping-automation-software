@@ -21,6 +21,16 @@ class Product extends BaseProduct implements ProductInterface
      */
     protected $inventories;
 
+    /**
+     * @ORM\OneToMany(targetEntity="\App\Entity\EbayField", mappedBy="product",cascade={"all"})
+     */
+    protected $ebayFields;
+
+    /**
+     * @ORM\OneToMany(targetEntity="\App\Entity\AmazonField", mappedBy="product",cascade={"all"})
+     */
+    protected $amazonFields;
+
     public function __construct()
     {
         parent::__construct();
@@ -29,7 +39,6 @@ class Product extends BaseProduct implements ProductInterface
 
     public function getInventories(): ?Collection
     {
-        //var_dump($this->inventories);exit;
         return $this->inventories;
     }
 
@@ -59,5 +68,73 @@ class Product extends BaseProduct implements ProductInterface
     public function hasInventory(ProductInventory $inventory): bool
     {
         return $this->inventories->contains($inventory);
+    }
+
+    public function getEbayFields(): ?Collection
+    {
+        return $this->ebayFields;
+    }
+
+    public function setEbayFields(?Collection $ebayFields): self
+    {
+        
+        $this->EbayField = $ebayFields;
+
+        return $this;
+    }
+    public function addEbayField(EbayField $ebayField): void
+    {
+        if (!$this->hasEbayField($ebayField)) {
+            $this->ebayFields->add($ebayField);
+            $ebayField->setProductVariant($this);
+            $ebayField->setProduct($this->getProduct());
+        }
+    }
+
+    public function removeEbayField(EbayField $ebayField): void
+    {
+        if ($this->hasEbayField($ebayField)) {
+            $ebayField->setProductVariant(null);
+            $this->ebayFields->removeElement($ebayField);
+        }
+    }
+
+    public function hasEbayField(EbayField $ebayField): bool
+    {
+        return $this->ebayFields->contains($ebayField);
+    }
+
+    public function getAmazonFields(): ?Collection
+    {
+        return $this->amazonFields;
+    }
+
+    public function setAmazonFields(?Collection $amazonFields): self
+    {
+        
+        $this->AmazonFields = $amazonFields;
+
+        return $this;
+    }
+    public function addAmazonField(AmazonField $amazonField): void
+    {
+        if (!$this->hasAmazonField($amazonField)) {
+            $this->amazonFields->add($amazonField);
+            $amazonField->setProductVariant($this);
+            $amazonField->setProduct($this->getProduct());
+        }
+    }
+
+    public function removeAmazonField(AmazonField $amazonField): void
+    {
+        if ($this->hasAmazonField($amazonField)) {
+            $amazonField->setProductVariant(null);
+            $this->amazonFields->removeElement($amazonField);
+        }
+    }
+
+    public function hasAmazonField(AmazonField $amazonField): bool
+    {
+        return $this->amazonFields->contains($amazonField);
     }
 }
