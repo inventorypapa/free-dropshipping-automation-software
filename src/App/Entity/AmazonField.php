@@ -4,12 +4,12 @@ namespace App\Entity;
 
 use App\Repository\AmazonFieldRepository;
 use Doctrine\ORM\Mapping as ORM;
-
+use Sylius\Component\Resource\Model\ResourceInterface;
 /**
  * @ORM\Entity(repositoryClass=AmazonFieldRepository::class)
  * @ORM\Table(name="amazonfield",uniqueConstraints={@ORM\UniqueConstraint(name="uniq_idx", fields={"amazonAccount", "amazonSku"})})
  */
-class AmazonField
+class AmazonField implements ResourceInterface
 {
     /**
      * @ORM\Id

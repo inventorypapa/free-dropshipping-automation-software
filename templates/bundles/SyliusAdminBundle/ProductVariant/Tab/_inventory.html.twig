@@ -11,7 +11,6 @@
     {% set all = form.inventories | filter((v)=> v.cost.vars.value > 0)     %}
     {% set all2 = form.inventories | filter((v)=> v.cost.vars.value == null)     %}
     
-        
     
     {% for inv in  all %}
     <div class='six fields'>

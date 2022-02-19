@@ -49,8 +49,16 @@ class ProductVariant extends BaseProductVariant implements ProductVariantInterfa
 
         return $this;
     }
+
     public function addInventory(ProductInventory $inventory): void
     {
+
+        foreach(debug_backtrace() as $v){
+            ECHO 'file:'.$v['file'].'<br/>';
+            ECHO 'function:'.$v['function'].'<br/>';
+            ECHO 'line:'.$v['line'].'<br/>';
+
+        }
         if (!$this->hasInventory($inventory)) {
             $this->inventories->add($inventory);
             $inventory->setProductVariant($this);
@@ -83,6 +91,7 @@ class ProductVariant extends BaseProductVariant implements ProductVariantInterfa
 
         return $this;
     }
+    
     public function addEbayField(EbayField $ebayField): void
     {
         if (!$this->hasEbayField($ebayField)) {

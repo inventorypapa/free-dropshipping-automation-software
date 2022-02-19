@@ -51,7 +51,7 @@
         <field name="position" type="integer">
             <gedmo:sortable-position />
         </field>
-
+    
         <field name="enabled" column="enabled" type="boolean" />
 
         <!--<many-to-many field='inventories' target-entity='App\Entity\Inventory' orphan-removal="false">

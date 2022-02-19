@@ -13,7 +13,10 @@ use Symfony\Component\Form\FormEvents ;
 use Symfony\Component\Form\FormEvent;
 use App\Form\Type\Inventory;
 use App\Form\Type\InventoryCollectionType;
+use App\Form\Type\EbayFieldCollectionType;
+use App\Form\Type\EbayField;
 use App\Form\Type\ProductInventoryCollectionType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 final class ProductVariantTypeExtension extends AbstractTypeExtension
 {
     private ?RepositoryInterface $inventoryRepository;
@@ -48,6 +51,17 @@ final class ProductVariantTypeExtension extends AbstractTypeExtension
                 },
                 'label' => 'sylius.form.inventory',
                 'mapped' => true,
+            ])->add('ebayfields', EbayFieldCollectionType::class, [
+                'entry_type' => \App\Form\Type\EbayField::class,
+                'entry_options' => function (string $ebayAccount) use ($productVariant) {
+                    return [
+                        'name' => $ebayAccount,
+                        'required' => false,
+                    ];
+                },
+                'label' => 'sylius.form.ebayfield',
+                'mapped' => true,
+                //'allow_add' => true,
             ]);
             
         });

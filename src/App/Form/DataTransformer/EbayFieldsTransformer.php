@@ -23,7 +23,7 @@ use Sylius\Component\Resource\Factory\FactoryInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 
-final class ProductInventoriesToInventoriesTransformer implements DataTransformerInterface
+final class EbayFieldsTransformer implements DataTransformerInterface
 {
 
     /**
@@ -43,7 +43,6 @@ final class ProductInventoriesToInventoriesTransformer implements DataTransforme
 
     public function transform($productAssociations)
     {
-        //var_dump($productAssociations->first()->getCost());exit;
         $this->setInventories($productAssociations);
         if (null === $productAssociations) {
             return '';
@@ -51,7 +50,7 @@ final class ProductInventoriesToInventoriesTransformer implements DataTransforme
         $values = [];
         
         foreach($productAssociations as $k => $v){
-            $values[$v->getCode()] = $v;
+            $values[$v->getEbayAccount()] = $v;
         }
         return $values;
     }
@@ -61,14 +60,15 @@ final class ProductInventoriesToInventoriesTransformer implements DataTransforme
         //var_dump($values);exit;
        $values = array_filter($values, function($v){return $v ;});
        $ret = new ArrayCollection();
-        foreach($values as $k => $v){
-            if($v instanceof  \App\Entity\ProductInventory){
-                if($v->getCost() and $v->getShipping()){
-
-                    $inv = $this->inventoryRepository->findByCode($k);
-                    $v->setInventory($inv); // needed for add new ProductInventory
+       foreach($values as $k => $v){
+            if($v instanceof  \App\Entity\EbayField){
+                if($v->getEbayBrandName() and $v->getEbayItemId()){
+                    //$inv = $this->inventoryRepository->findByCode($k);
+                    //$v->setInventory($inv); // needed for add new ProductInventory
                     $ret->add($v);
                 }
+            }else{
+                var_dump($v);exit;
             }
         }
         return $ret;

@@ -9,7 +9,9 @@ final class AdminProductVariantFormMenuListener
     public function addItems(ProductVariantMenuBuilderEvent $event): void
     {
         $menu = $event->getMenu();
-
-        $menu->reorderChildren(['inventory','details','taxes']);
+        $menu->addChild('ebayfields') 
+        ->setAttribute('template', '@SyliusAdmin/ProductVariant/Tab/_ebayfields.html.twig')
+        ->setLabel('sylius.ui.ebayfields');
+        $menu->reorderChildren(['inventory','ebayfields','details','taxes']);
     }
 }

@@ -24,6 +24,12 @@ services:
             - "@doctrine.orm.entity_manager"
             - getRepository
         arguments: [App\Entity\Inventory]
+    app.repository.ebayfield:
+        class: App\Repository\EbayFieldRepository
+        factory:
+            - "@doctrine.orm.entity_manager"
+            - getRepository
+        arguments: [App\Entity\EbayField]
     app.repository.track2:
         class: App\Repository\TrackRepository
         factory:
@@ -71,6 +77,10 @@ services:
         class: App\Form\DataTransformer\ProductInventoriesToInventoriesTransformer
         arguments:
             ['@app.repository.inventory']
+    app.form.type.ebayfields.datatransformer:
+        class: App\Form\DataTransformer\EbayFieldsTransformer
+        arguments:
+            ['@app.repository.inventory']
     app.form.type.inventory_collection:
         class: App\Form\Type\InventoryCollectionType
         tags:
@@ -78,6 +88,13 @@ services:
         arguments:
             - '@app.repository.inventory'
             - '@app.form.type.inventory_collection.datatransformer'
+    app.form.type.ebayfield_collection:
+        class: App\Form\Type\EbayFieldCollectionType
+        tags:
+            - { name: form.type }
+        arguments:
+            - '@app.repository.ebayfield'
+            - '@app.form.type.ebayfields.datatransformer'
     app.form.type.order_routed:
         class: App\Form\Type\OrderRouted
         tags:
@@ -103,6 +120,14 @@ services:
             - { name: form.type }
         arguments:
             - '@app.repository.track2'
+    app.form.type.ebayfield:
+        class: App\Form\Type\EbayField
+        tags:
+            - { name: form.type }
+        arguments:
+            - \App\Entity\Inventory
+            - [sylius]
+            - '@app.repository.ebayfield'
     app.form.extension.type.product:
         class: App\Form\Extension\ProductTypeExtension
         tags:

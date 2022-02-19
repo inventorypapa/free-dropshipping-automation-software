@@ -4,12 +4,12 @@ namespace App\Entity;
 
 use App\Repository\EbayFieldRepository;
 use Doctrine\ORM\Mapping as ORM;
-
+use Sylius\Component\Resource\Model\ResourceInterface;
 /**
  * @ORM\Entity(repositoryClass=EbayFieldRepository::class)
  * @ORM\Table(name="ebayfield",uniqueConstraints={@ORM\UniqueConstraint(name="uniq_idx", fields={"ebayItemId", "ebayAccount"})})
  */
-class EbayField
+class EbayField implements ResourceInterface
 {
     /**
      * @ORM\Id

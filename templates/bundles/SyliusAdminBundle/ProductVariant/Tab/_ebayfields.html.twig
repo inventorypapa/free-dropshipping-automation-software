@@ -1,0 +1,64 @@
+<div class="ui tab" data-tab="ebayfields">
+<h3 class="ui dividing header">{{ 'sylius.ui.ebayfields' | trans}}</h3>
+    <div class='six fields'>
+        <div class='field'><label>{{ 'sylius.ui.ebay_account' | trans}}</label></div>
+        <div class='field'><label>{{ 'sylius.ui.ebay_item_id' | trans}}</label></div>
+        <div class='field'><label>{{ 'sylius.ui.ebay_brand_name' | trans}}</label></div>
+    </div>
+    {% set all = form.ebayfields | filter((v)=> v.children['ebayBrandName'].vars.value != "")    %}
+    {% set all2 = form.ebayfields | filter((v)=> v.children['ebayBrandName'].vars.value == "")     %}
+    {% for inv in  all %}
+    <div class='six fields'>
+        <div class='field'>
+            {{ inv.vars.name }}
+        </div>
+         <input type="hidden" id="sylius_product_variant_inventories_ebayaccount" name="sylius_product_variant[ebayfields][{{ inv.vars.name }}][ebayAccount]"  value="{{ inv.vars.name }}">
+        {{ form_row(inv.ebayItemId) }}
+        {{ form_row(inv.ebayBrandName) }}
+        {{ form_row(inv.productId) }}
+        {{ form_row(inv.variantId) }}
+    </div>
+    {% endfor %}
+    {% if all2 | length %}
+        <div class='six fields'>
+            <div class='field'>
+                <select onChange='changeInv2(this)'>
+                    <option value='toreplace'>Select EbayAccount</option>
+                {% for k, inv in  all2 %}
+                    <option value='{{ k }}'> {{ k }} </option>
+                {% endfor %}
+                </select>
+            </div>
+            <div class="field">
+             <input type="hidden" id="sylius_product_variant_inventories_toreplace_productid" name="sylius3_product_variant[ebayfields][toreplace][productId]"  value="{{ product_variant.product.Id }}">
+             <input type="hidden" id="sylius_product_variant_inventories_toreplace_variantid" name="sylius3_product_variant[ebayfields][toreplace][variantId]"  value="{{ product_variant.Id }}">
+            <input type="text" id="sylius_product_variant_inventories_toreplace_sku" name="sylius3_product_variant[ebayfields][toreplace][ebayItemId]" class="dirty">
+            </div>
+            <div class="field">
+                <input type="text" id="sylius_product_variant_inventories_toreplace_onHand" name="sylius3_product_variant[ebayfields][toreplace][ebayBrandName]" class="dirty">
+            </div>
+        </div>
+    {% endif %}
+    {{ sylius_template_event(['sylius.admin.product_variant.' ~ action ~ '.tab_inventory', 'sylius.admin.product_variant.tab_inventory'], {'form': form}) }}
+</div>
+{% block  javascript  %}
+<script>
+function changeInv2(d){
+    /*
+    change name to sylius3 for fixing error: This formcannt contain extra fields           
+    */
+    let tmp = d.parentNode.parentNode.getElementsByTagName('input');
+
+    for(let i = 0;  i < tmp.length; i++){
+        let v = tmp[i].name.replace(/variant\[ebayfields\]\[(.+?)\]/g, 'variant\[ebayfields\]['+ d.value + ']');
+        if(d.value != 'toreplace'){
+            d.parentNode.parentNode.getElementsByTagName('input')[i].name = v.replace('sylius3','sylius');
+            d.name = 'sylius_product_variant[ebayfields][' + d.value + '][ebayAccount]';
+        }else{
+            d.parentNode.parentNode.getElementsByTagName('input')[i].name = v.replace('sylius','sylius3');
+            d.name = '';
+        }
+    }
+}
+</script>
+{%  endblock  %}
