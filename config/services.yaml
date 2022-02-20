@@ -30,6 +30,12 @@ services:
             - "@doctrine.orm.entity_manager"
             - getRepository
         arguments: [App\Entity\EbayField]
+    app.repository.amazonfield:
+        class: App\Repository\AmazonFieldRepository
+        factory:
+            - "@doctrine.orm.entity_manager"
+            - getRepository
+        arguments: [App\Entity\AmazonField]
     app.repository.track2:
         class: App\Repository\TrackRepository
         factory:
@@ -81,6 +87,8 @@ services:
         class: App\Form\DataTransformer\EbayFieldsTransformer
         arguments:
             ['@app.repository.inventory']
+    app.form.type.amazonfields.datatransformer:
+        class: App\Form\DataTransformer\AmazonFieldsTransformer
     app.form.type.inventory_collection:
         class: App\Form\Type\InventoryCollectionType
         tags:
@@ -95,6 +103,13 @@ services:
         arguments:
             - '@app.repository.ebayfield'
             - '@app.form.type.ebayfields.datatransformer'
+    app.form.type.amazonfield_collection:
+        class: App\Form\Type\AmazonFieldCollectionType
+        tags:
+            - { name: form.type }
+        arguments:
+            - '@app.repository.amazonfield'
+            - '@app.form.type.amazonfields.datatransformer'
     app.form.type.order_routed:
         class: App\Form\Type\OrderRouted
         tags:
@@ -125,9 +140,17 @@ services:
         tags:
             - { name: form.type }
         arguments:
-            - \App\Entity\Inventory
+            - \App\Entity\EbayField
             - [sylius]
             - '@app.repository.ebayfield'
+    app.form.type.amazonfield:
+        class: App\Form\Type\AmazonField
+        tags:
+            - { name: form.type }
+        arguments:
+            - \App\Entity\AmazonField
+            - [sylius]
+            - '@app.repository.amazonfield'
     app.form.extension.type.product:
         class: App\Form\Extension\ProductTypeExtension
         tags:

@@ -23,7 +23,7 @@
         <div class='six fields'>
             <div class='field'>
                 <select onChange='changeInv2(this)'>
-                    <option value='toreplace'>Select EbayAccount</option>
+                    <option value='toreplace'>{{ 'sylius.ui.select_ebay_account' | trans}}</option>
                 {% for k, inv in  all2 %}
                     <option value='{{ k }}'> {{ k }} </option>
                 {% endfor %}

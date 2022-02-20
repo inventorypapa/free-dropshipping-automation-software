@@ -1,0 +1,64 @@
+<div class="ui tab" data-tab="amazonfields">
+<h3 class="ui dividing header">{{ 'sylius.ui.amazonfields' | trans}}</h3>
+    <div class='six fields'>
+        <div class='field'><label>{{ 'sylius.ui.amazon_account' | trans}}</label></div>
+        <div class='field'><label>{{ 'sylius.ui.amazon_sku' | trans}}</label></div>
+        <div class='field'><label>{{ 'sylius.ui.asin' | trans}}</label></div>
+    </div>
+    {% set all = form.amazonfields | filter((v)=> v.children['amazonSku'].vars.value != "")    %}
+    {% set all2 = form.amazonfields | filter((v)=> v.children['amazonSku'].vars.value == "")     %}
+    {% for inv in  all %}
+    <div class='six fields'>
+        <div class='field'>
+            {{ inv.vars.name }}
+        </div>
+         <input type="hidden" id="sylius_product_variant_inventories_amazonaccount" name="sylius_product_variant[amazonfields][{{ inv.vars.name }}][amazonAccount]"  value="{{ inv.vars.name }}">
+        {{ form_row(inv.amazonSku) }}
+        {{ form_row(inv.asin) }}
+        {{ form_row(inv.productId) }}
+        {{ form_row(inv.variantId) }}
+    </div>
+    {% endfor %}
+    {% if all2 | length %}
+        <div class='six fields'>
+            <div class='field'>
+                <select onChange='changeInv3(this)'>
+                    <option value='toreplace'>{{ 'sylius.ui.select_amazon_account' | trans }}</option>
+                {% for k, inv in  all2 %}
+                    <option value='{{ k }}'> {{ k }} </option>
+                {% endfor %}
+                </select>
+            </div>
+            <div class="field">
+             <input type="hidden" id="sylius_product_variant_inventories_toreplace_productid" name="sylius4_product_variant[amazonfields][toreplace][productId]"  value="{{ product_variant.product.Id }}">
+             <input type="hidden" id="sylius_product_variant_inventories_toreplace_variantid" name="sylius4_product_variant[amazonfields][toreplace][variantId]"  value="{{ product_variant.Id }}">
+            <input type="text" id="sylius_product_variant_inventories_toreplace_sku" name="sylius4_product_variant[amazonfields][toreplace][amazonSku]" class="dirty">
+            </div>
+            <div class="field">
+                <input type="text" id="sylius_product_variant_inventories_toreplace_onHand" name="sylius4_product_variant[amazonfields][toreplace][asin]" class="dirty">
+            </div>
+        </div>
+    {% endif %}
+    {{ sylius_template_event(['sylius.admin.product_variant.' ~ action ~ '.tab_inventory', 'sylius.admin.product_variant.tab_inventory'], {'form': form}) }}
+</div>
+{% block  javascript  %}
+<script>
+function changeInv3(d){
+    /*
+    change name to sylius4 for fixing error: This formcannt contain extra fields           
+    */
+    let tmp = d.parentNode.parentNode.getElementsByTagName('input');
+
+    for(let i = 0;  i < tmp.length; i++){
+        let v = tmp[i].name.replace(/variant\[amazonfields\]\[(.+?)\]/g, 'variant\[amazonfields\]['+ d.value + ']');
+        if(d.value != 'toreplace'){
+            d.parentNode.parentNode.getElementsByTagName('input')[i].name = v.replace('sylius4','sylius');
+            d.name = 'sylius_product_variant[amazonfields][' + d.value + '][amazonAccount]';
+        }else{
+            d.parentNode.parentNode.getElementsByTagName('input')[i].name = v.replace('sylius','sylius4');
+            d.name = '';
+        }
+    }
+}
+</script>
+{%  endblock  %}
